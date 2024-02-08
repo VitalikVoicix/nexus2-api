@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="f8c3de97-6049-4757-8f4b-5fb05c5d6bf0" >
+		<http:listener-connection host="0.0.0.0" port="${http.port}" />
+	</http:listener-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="d4316a6e-30e6-4b83-be17-18f1928b91e7" file="nexus-api-${env}.yaml" />
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="c185a994-e0a4-4fb9-9be8-8c407786ba81" file="nexus-api-${env}.yaml" key="${secure.key}" />
+	<flow name="nexus2-apiFlow" doc:id="a4d134ba-f29c-4ce6-85e3-4e52bf277167" >
+		<http:listener doc:name="Listener" doc:id="d21b98b4-5b3f-4386-a9dc-69f7d024a7bc" config-ref="HTTP_Listener_config" path="/test"/>
+		<set-payload value="#[output application/json --- &quot;Welcome to nexus repo&quot; ++&quot; &quot; ++ Mule::p('http.env') ++ &quot;Jenkins&quot;++&quot; &quot;]" doc:name="Set Payload" doc:id="c244c6c3-d1cb-4332-a54d-26d72b6da3b8" />
+	</flow>
+</mule>
